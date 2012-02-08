@@ -47,7 +47,7 @@ Generating the graphs
 Run make-graphs.py. It outputs the following:
 
 * identified_cpus.txt
-	The right column contains a list of all processor names encountered in the input, along with the source filename and line number. The left column contains the recognized brand name, model name and MHz. I used this file to develop & debug the identifyCPU() function found in the script. If new processors are introduced, this function may need to adapt. It might be a good idea to do a diff of this file generated from the latest SPEC data against a copy generated from older data.
+	The right column contains a list of all processor names encountered in the input, along with the source filename. The left column contains the recognized brand name, model name and MHz. I used this file to develop & debug the identifyCPU() function found in the script. If new processors are introduced, this function may need to adapt. It might be a good idea to do a diff of this file generated from the latest SPEC data against a copy generated from older data.
 
 * int_report.txt
 	The first two lines show the automatically computed conversion ratios between CINT95, CINT2000 and CINT2006. The rest of the file groups all the results by family, then sorts them by hardware release date and normalized SPECint2006 result value. Each line shows the benchmark suite and line number. You should be able to pick out certain points on the PNG graph, find them in this text file, locate the corresponding line in the CSV, and use that to find the detailed html/PDF result page on SPEC's website.
