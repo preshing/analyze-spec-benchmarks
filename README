@@ -10,7 +10,8 @@ Requirements
 ------------
 
 * Python 2.6 - 2.7 is required.
-* lxml is required if you want to fetch all the data from SPEC's website. Otherwise, you can download aggregated data from [TODO]. You could probably rewrite the lxml part using one of Python's built-in modules; I didn't bother.
+* lxml is required if you want to fetch all the data from SPEC's website. Otherwise, you can download aggregated data from: http://preshing.com/files/specdata20120207.zip
+  You could probably rewrite the lxml part using one of Python's built-in modules; I didn't bother.
 * pycairo is optional if you want to generate the PNG files.
 * PIL is optional if you want those PNG files to have high-quality anti-aliasing.
 * If you are going to republish any results, you need to abide by SPEC's fair use policy. http://www.spec.org/fairuse.html
@@ -21,7 +22,7 @@ Collecting SPEC's data
 
 These scripts work with the individual benchmarks in each SPEC result, and not the geometric average which SPEC lists in their CSV downloads. Currently, the only way to access these individual benchmark results is to scrape each result page from their website as text and/or HTML.
 
-If you want to skip the steps in this section, you can simply download the aggregated result files from [TODO] and extract them to this folder.
+If you want to skip the steps in this section, you can simply download the aggregated result files from http://preshing.com/files/specdata20120207.zip and extract them to this folder.
 
 If you want to scrape & aggregate the results yourself, proceed as follows:
 
@@ -33,9 +34,11 @@ If you want to scrape & aggregate the results yourself, proceed as follows:
 Determining which benchmarks took advantage of autoparallel, and disqualifying them
 -----------------------------------------------------------------------------------
 
-Run check-autoparallel.py to see which benchmark tests had the highest multiple of the geometric average. [TODO] I've assumed that the highest scores definitely benefit from autoparallelization.
+As described in the blog post, certain benchmarks were disqualified from the results due to automatic parallelization. To see the list, search DISQUALIFIED_BENCHMARKS in make-graphs.py.
 
-I took the top six benchmark tests from both the INT and FP categories, and excluded them from the results in make-graphs.py. Search for DISQUALIFIED_BENCHMARKS in make-graphs.py.
+This list was obtained by running check-autoparallel.py. For every benchmark run with autoparallelization, this script finds the highest multiple of that benchmark relative to the geometric average of all benchmarks in that result. The top six SPECint and SPECfp benchmarks were disqualified.
+
+Obviously, I've assumed that the compiler was not able to automatically parallelize any of the benchmarks below that, and I feel the output of check-autoparallel.py currently makes this assumption reasonable. If this assumption is wrong, I doubt it would alter the conclusions in the blog post. (But of course, that's another assumption...)
 
 
 Generating the graphs
@@ -54,7 +57,7 @@ Run make-graphs.py. It outputs the following:
 
 * int_graph.png
 * fp_graph.png
-	Graphs similar to the ones you'll find on [TODO].
+	Graphs similar to the ones you'll find on preshing.com [TODO].
 
 
 -----
