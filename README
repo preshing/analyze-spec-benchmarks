@@ -3,7 +3,7 @@ Original version by Jeff Preshing in February 2012.
 Released to the public domain.
 
 For more information:
-http://preshing.com/ [TODO]
+http://preshing.com/20120208/a-look-back-at-single-threaded-cpu-performance
 
 
 Requirements
@@ -57,7 +57,7 @@ Run make-graphs.py. It outputs the following:
 
 * int_graph.png
 * fp_graph.png
-	Graphs similar to the ones you'll find on preshing.com [TODO].
+	Graphs similar to the ones you'll find at: http://preshing.com/20120208/a-look-back-at-single-threaded-cpu-performance
 
 
 -----
