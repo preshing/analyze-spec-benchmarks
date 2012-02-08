@@ -1,0 +1,61 @@
+A set of Python scripts to fetch benchmarks spec.org, analyze them, and output some text & PNG files.
+Original version by Jeff Preshing in February 2012.
+Released to the public domain.
+
+For more information:
+http://preshing.com/ [TODO]
+
+
+Requirements
+------------
+
+* Python 2.6 - 2.7 is required.
+* lxml is required if you want to fetch all the data from SPEC's website. Otherwise, you can download aggregated data from [TODO]. You could probably rewrite the lxml part using one of Python's built-in modules; I didn't bother.
+* pycairo is optional if you want to generate the PNG files.
+* PIL is optional if you want those PNG files to have high-quality anti-aliasing.
+* If you are going to republish any results, you need to abide by SPEC's fair use policy. http://www.spec.org/fairuse.html
+
+
+Collecting SPEC's data
+----------------------
+
+These scripts work with the individual benchmarks in each SPEC result, and not the geometric average which SPEC lists in their CSV downloads. Currently, the only way to access these individual benchmark results is to scrape each result page from their website as text and/or HTML.
+
+If you want to skip the steps in this section, you can simply download the aggregated result files from [TODO] and extract them to this folder.
+
+If you want to scrape & aggregate the results yourself, proceed as follows:
+
+1. Run fetch-pages.py. As of this writing, this script downloads 30715 individual pages from SPEC's website and stores them to a folder named "scraped". It's about 383 MB of data, but may be more in the future. The script launches a pool of 20 subprocesses to speed up the download process, so it completes in a matter of minutes. Some requests may time out and break the script; if that happens, simply run the script again. All previously downloaded pages will not be downloaded again. Note that if SPEC changes their website in the future, the script will need to be updated.
+
+2. Run analyze-pages.py. This will scan all the pages downloaded by the previous script, and output two CSV files: summaries.txt and benchmarks.txt. These files will be used as inputs for the remaining scripts.
+
+
+Determining which benchmarks took advantage of autoparallel, and disqualifying them
+-----------------------------------------------------------------------------------
+
+Run check-autoparallel.py to see which benchmark tests had the highest multiple of the geometric average. [TODO] I've assumed that the highest scores definitely benefit from autoparallelization.
+
+I took the top six benchmark tests from both the INT and FP categories, and excluded them from the results in make-graphs.py. Search for DISQUALIFIED_BENCHMARKS in make-graphs.py.
+
+
+Generating the graphs
+---------------------
+
+Run make-graphs.py. It outputs the following:
+
+* identified_cpus.txt
+	The right column contains a list of all processor names encountered in the input, along with the source filename and line number. The left column contains the recognized brand name, model name and MHz. I used this file to develop & debug the identifyCPU() function found in the script. If new processors are introduced, this function may need to adapt. It might be a good idea to do a diff of this file generated from the latest SPEC data against a copy generated from older data.
+
+* int_report.txt
+	The first two lines show the automatically computed conversion ratios between CINT95, CINT2000 and CINT2006. The rest of the file groups all the results by family, then sorts them by hardware release date and normalized SPECint2006 result value. Each line shows the benchmark suite and line number. You should be able to pick out certain points on the PNG graph, find them in this text file, locate the corresponding line in the CSV, and use that to find the detailed html/PDF result page on SPEC's website.
+
+* fp_report.txt
+	Same thing as int_report.txt, but for floating-point benchmarks.
+
+* int_graph.png
+* fp_graph.png
+	Graphs similar to the ones you'll find on [TODO].
+
+
+-----
+SPECint(R) and SPECfp(R) are registered trademarks of the Standard Performance Evaluation Corporation (SPEC).
