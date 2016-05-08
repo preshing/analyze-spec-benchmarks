@@ -2,6 +2,8 @@ import urllib2
 import multiprocessing
 import lxml.html
 import os
+import time
+
 
 def cachedFetch(url, localPath, verbose=True):
     if os.path.exists(localPath):
@@ -12,8 +14,17 @@ def cachedFetch(url, localPath, verbose=True):
         pass
     if verbose:
         print 'Fetching %s ...' % url
-    response = urllib2.urlopen(url)
-    data = response.read()
+    finished=False
+    sleepTime=1
+    while not(finished):
+      try:
+        response = urllib2.urlopen(url)
+        data = response.read()
+        finished=True
+      except:
+        time.sleep(sleepTime)
+        sleepTime*=2
+        print 'Fetching Hit a snag fetching the page, retrying...'
     with open(localPath, 'wb') as f:
         f.write(data)
     return 'Fetched ' + url
