@@ -170,7 +170,7 @@ def parse2006(path):
             return [], []
     benches = []
     for line in lineIter:
-        m = re.match(' (SPEC.{27})    ', line)
+        m = re.match(' (SPEC.{27})  ', line)
         if m:
             benchType = m.group(1).strip()
             break
@@ -182,7 +182,9 @@ def parse2006(path):
         return [], []
     benchType = {
         'SPECint(R)_base2006' : 'CINT2006',
-        'SPECfp(R)_base2006' : 'CFP2006'
+        'SPECfp(R)_base2006' : 'CFP2006',
+        'SPECint(R)_rate_base2006' : 'CINT2006',
+        'SPECfp(R)_rate_base2006' : 'CFP2006'
     }[benchType]
     base = line[33:43].strip()
     peak = lineIter.next()[65:75].strip()
